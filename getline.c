@@ -2,7 +2,7 @@
 #include<stdlib.h>
 
 /**
- * getline - function that reads a line from a file 
+ * my_getline - function that reads a line from a file 
  * pointer and stores it in a charcter array
  *
  * @ptr - pointer to a buffer where text is stored
