@@ -20,6 +20,8 @@ int main(int argc, char *argv[])
 
 	printf("#cisfun$");
 
+	line = strtok(argv, " ");
+
 	while ((read_n = getline(&line, &i, stdin)) != -1)
 	{
 
