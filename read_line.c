@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
+
 /**
  * main - Function that reads a command from the
  * user and prints it to next line
