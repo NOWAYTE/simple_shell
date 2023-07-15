@@ -54,6 +54,12 @@ int main(void)
 
 	}
 
+	for (i = 0; i < 5; i++)
+	{
+		wait();
+
+	}
+
 	return (0);
 
 }
