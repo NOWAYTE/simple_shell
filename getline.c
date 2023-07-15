@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
+
 /**
  * getline - function that reads a line from a file 
  * pointer and stores it in a charcter array
