@@ -12,6 +12,9 @@
 int main(int argc, char *argv[])
 {
 	pid_t parent_pid;
+	int x = 0;
+
+	char *tok;
 
 	char *line = NULL;
 
@@ -20,10 +23,21 @@ int main(int argc, char *argv[])
 
 	printf("#cisfun$");
 
-	line = strtok(argv, " ");
-
 	while ((read_n = getline(&line, &i, stdin)) != -1)
 	{
+
+		tok = strtok(line, " ");
+
+		while (tok != NULL)
+		{
+			argv[x++] = tok;
+
+			tok = strtok(NULL, " ");
+
+		}
+
+		argv[x] = NULL;
+
 
 		char *envp[] = {NULL};
 
