@@ -12,13 +12,13 @@ int main(void)
 {
 	int id, i;
 
-	char cmd = "/usr/bin/ls";
+	char *cmd = "/usr/bin/ls";
 
 	char *argv[] = {"/usr/bin/ls", "-l", "/tmp", NULL};
 
 	char *envp[] = {NULL};
 
-	id = folk();
+	id = fork();
 
 	if (id == -1)
 	{
@@ -28,14 +28,28 @@ int main(void)
 
 	}
 
-	for (i = 0; i < 6; i++)
+	for (i = 0; i < 5; i++)
 	{
-		if (id != 0)
+		if (id == 0)
 		{
-			folk();
-
 			execve(cmd, argv, envp);
+			perror("Error");
 
+			return (1);
+
+		}
+		else
+		{
+			id = fork();
+
+			if (id == -1)
+
+			{
+				perror("Error");
+
+				return (1);
+
+			}
 		}
 
 	}
