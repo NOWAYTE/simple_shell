@@ -23,9 +23,6 @@ int main(int argc, char *argv[])
 	while ((read_n = getline(&line, &i, stdin)) != -1)
 	{
 
-
-		char *argv[] = {argv[0], argv[1], NULL};
-
 		char *envp[] = {NULL};
 
 		if (strcmp(argv[0], "./ppid") == 0)
