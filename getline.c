@@ -19,6 +19,11 @@ size_t my_getline(char *ptr, size_t *len, FILE *stream)
 	size_t i = 0;
 	 char ch;
 
+	 /**
+	  * Note : for this my_getline function the size of array
+	  * doesnt change if so needed use realloc to declare 
+	  * a new size of array
+	  */
 	while ((ch = getc(stream)) != EOF )
 	{
 		if (ch != EOF)
