@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
 
 		char *envp[] = {NULL};
 
-		if (strcmp(argv[0], "./ppid") == 0)
+		if (argv[i] != NULL && strcmp(argv[1], "./ppid") == 0)
 		{
 			parent_pid = getpid();
 
@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
 
 		}
 
-		if (execve(argv[0], argv, envp) == -1)
+		if (execve(argv[1], argv, envp) == -1)
 		{
 			perror("Execve did not execute");
 
