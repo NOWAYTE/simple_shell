@@ -23,6 +23,8 @@ int main(void)
 
 	while ((read_n = getline(&cmd, &i, stdin)) != -1)
 	{
+		cmd[read_n -1] = '\0';
+
 		token = strtok(cmd, delim);
 
 		while (token != NULL)
@@ -50,7 +52,7 @@ int main(void)
 
 		for (x = 0; x < argc; x++)
 		{
-			printf("%s", argv[x]);
+			printf("%s \n", argv[x]);
 		}
 
 		printf("#cisfun$ ");
@@ -63,6 +65,7 @@ int main(void)
 	}
 
 	free(cmd);
+	free(cpy_cmd);
 
 	return (0);
 
