@@ -20,6 +20,7 @@ int main(void)
 
 	while (getline(&cmd, &i, stdin) != -1)
 	{
+		cmd[strcspn(cmd, "\n")] = 0;
 		token = strtok(cmd, delim);
 
 		while (token !=  NULL)
@@ -32,7 +33,7 @@ int main(void)
 
 		printf("%d", argc);
 
-		argv = malloc(sizeof(char *) * argc);
+		argv = malloc(sizeof(char *) * (argc + 1));
 
 		cpy = strdup(cmd);
 
@@ -45,8 +46,6 @@ int main(void)
 			token = strtok(NULL, delim);
 			n++;
 		}
-
-		argv[n] = NULL;
 
 		for (x = 0; x < argc; x++)
 		{
