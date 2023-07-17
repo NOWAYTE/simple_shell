@@ -6,17 +6,16 @@
 
 int main(void)
 {
+
+	char *cmd = NULL;
 	int argc = 0;
-
-	char *token = NULL;
-
+	int n = 0;
+	int x = 0;
 	char **argv = NULL;
 
 	size_t i = 0;
 
-	int n = 0;
-
-	char *cmd = NULL;
+	char *token = NULL;
 
 	ssize_t read_n;
 
@@ -34,29 +33,23 @@ int main(void)
 	while (token)
 	{
 		token = strtok(NULL, delim);
-
 		argc++;
-
 	}
 
-	printf("%d", argc);
-
-
-	argv = malloc(sizeof(char *) * argc);
+	argv = malloc(sizeof(char *) *argc);
 
 	while (token)
 	{
 		argv[n] = token;
 
 		token = strtok(NULL, delim);
-
 		n++;
 	}
 
 	while (argv)
 	{
-		printf("%s", argv[n]);
-		n++;
+		printf("%s", argv[x]);
+		x++;
 	}
 
 	return (0);
