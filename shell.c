@@ -30,22 +30,25 @@ int main(void)
 
 		}
 
+		printf("%d", argc);
+
 		argv = malloc(sizeof(char *) * argc);
 
 		cpy = strdup(cmd);
 
 		token = strtok(cpy, delim);
-
-		while (token != NULL)
+		
+		while (token)
 		{
 			argv[n] = token;
 
 			token = strtok(NULL, delim);
-
 			n++;
 		}
 
-		for (x = 0; x < argc; x ++)
+		argv[n] = NULL;
+
+		for (x = 0; x < argc; x++)
 		{
 			printf("%s\n", argv[x]);
 
