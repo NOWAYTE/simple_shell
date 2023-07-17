@@ -8,6 +8,7 @@ int main(void)
 {
 
 	char *cmd = NULL;
+	char *cpy_cmd = NULL;
 	size_t i = 0;
 	ssize_t read_n;
 	int argc = 0;
@@ -34,14 +35,16 @@ int main(void)
 
 		argv = malloc(sizeof(char *) * argc);
 
-		token = strtok(cmd, delim);
+		cpy_cmd = strdup(cmd);
+
+		token = strtok(cpy_cmd, delim);
 
 		while (token != NULL)
 		{
 			argv[n] = token;
-			n++;
 
 			token = strtok(NULL, delim);
+			n++;
 
 		}
 
