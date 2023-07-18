@@ -43,17 +43,22 @@ int main(void)
 		cpy = strdup(cmd);
 
 		token = strtok(cpy, delim);
-		
-		while (token)
+
+		for (n = 0; n < argc; n++)
 		{
 			argv[n] = token;
 
 			token = strtok(NULL, delim);
-			n++;
 		}
 
 		printf("%s \n", argv[0]);
 		printf("%s \n", argv[1]);
+
+		while (argv)
+		{
+			printf("%s\n", argv[n++]);
+
+		}
 
 		printf("#cisfun$ ");
 
