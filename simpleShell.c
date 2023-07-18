@@ -1,11 +1,14 @@
 #include<stdio.h>
 #include<stdlib.h>
-#include<unistd.h>
 #include<string.h>
+#include<sys/wait.h>
+#include<sys/types.h>
+#include<unistd.h>
 
 int main()
 {
 	char *line = NULL;
+	pid_t parent_pid;
 	int id;
 	char **argv = NULL;
 	int argc = 0;
@@ -21,6 +24,8 @@ int main()
 	size_t i = 0;
 
 	printf("#cisfun$ ");
+
+	parent_pid = getpid();
 
 	while ((read_n = getline(&line, &i, stdin)) != -1)
 	{
@@ -53,12 +58,18 @@ int main()
 			x++;
 		}
 		argv[x] = NULL;
+		
+		if (strcmp(argv[0], "./ppid") == 0)
+		{
+			printf("%u \n", parent_pid);
+
+		}
 
 		id = fork();
 
 		if (id != 0)
 		{
-			wait();
+			wait (0);
 
 		}
 		else
