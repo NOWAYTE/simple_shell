@@ -11,6 +11,7 @@ int main()
 	int x = 0;
 
 	char *token = NULL;
+	char *tok = NULL;
 	char *delim = " ";
 
 	ssize_t read_n;
@@ -36,11 +37,13 @@ int main()
 
 		}
 
+		tok =  strtok(line, delim);
+
 		while(token)
 		{
-			argv[x] = token;;
+			argv[x] = tok;;
 
-			token = strtok(NULL, delim);
+			tok = strtok(NULL, delim);
 			printf("%s \n", argv[x]);
 			x++;
 		}
