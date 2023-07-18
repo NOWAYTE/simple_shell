@@ -6,9 +6,12 @@
 int main()
 {
 	char *line = NULL;
+	int id;
 	char **argv = NULL;
-	int argc = 1;
+	int argc = 0;
+	char *cmd = NULL;
 	int x = 0;
+	char *envp[] = {NULL};
 
 	char *token = NULL;
 	char *tok = NULL;
@@ -21,6 +24,8 @@ int main()
 
 	while ((read_n = getline(&line, &i, stdin)) != -1)
 	{
+		cmd = strdup(line);
+
 		token = strtok(line, delim);
 
 		while (token)
@@ -37,9 +42,9 @@ int main()
 
 		}
 
-		tok =  strtok(line, delim);
+		tok =  strtok(cmd, delim);
 
-		while(token)
+		while(tok)
 		{
 			argv[x] = tok;;
 
@@ -49,7 +54,31 @@ int main()
 		}
 		argv[x] = NULL;
 
-		printf("%d", argc);
+		id = fork();
+
+		if (id != 0)
+		{
+			wait();
+
+		}
+		else
+		{
+			printf("======================================== \n");
+
+			if (execve(argv[0], argv, envp) == -1)
+			{
+				perror("Execve did not execute");
+
+			}
+			else
+			{
+				printf("Something went wrong ");
+
+			}
+		}
+
+
+		printf("%d \n", argc);
 
 		argc = 0;
 		x = 0;
