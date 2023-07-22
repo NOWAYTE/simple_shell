@@ -8,6 +8,8 @@ int main(int argc, char **argv)
 {
 	DIR *dir;
 	struct dirent *entry = NULL;
+	char *dir_name;
+	char *path_copy;
 	char *path;
 	char *filename;
 	int i;
@@ -26,9 +28,32 @@ int main(int argc, char **argv)
 
 		path = getenv("PATH");
 
-		dir = opendir(path);
+		if (path == NULL)
+		{
+			fprintf(stderr, "Error: PATH environment variavle not set \n");
 
-		while ((entry == readdir(dir)) != NULL)
+			return (1);
+
+		}
+
+		path_copy = strdup(path);
+
+		dir_name = strtok(path_copy, " : ");
+
+		while (dir_name != NULL)
+		{
+			dir = opendir(dir_name);
+
+			if (dir == NULL)
+			{
+				perror("Error");
+
+				return (1);
+			}
+
+		}
+
+		while ((entry = readdir(dir)) != NULL)
 		{
 			if (strcmp(entry->d_name, filename) == 0)
 			{
