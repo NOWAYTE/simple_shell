@@ -18,7 +18,7 @@ int main()
 
 	char *token = NULL;
 	char *tok = NULL;
-	char *delim = " ";
+	char *delim = " \n";
 
 	ssize_t read_n;
 	size_t i = 0;
@@ -51,7 +51,7 @@ int main()
 
 		while(tok)
 		{
-			argv[x] = tok;;
+			argv[x] = tok;
 
 			tok = strtok(NULL, delim);
 			printf("%s \n", argv[x]);
