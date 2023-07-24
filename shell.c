@@ -96,6 +96,8 @@ int main(__attribute__((unused))int argc, char **argv, __attribute__((unused))ch
 
 				closedir(dp);
 			}
+
+			dir = strtok(NULL, ":");
 		}
 
 		_print("($)", STDOUT_FILENO);
