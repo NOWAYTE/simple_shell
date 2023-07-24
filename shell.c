@@ -6,6 +6,7 @@ int main(__attribute__((unused))int argc, char **argv, __attribute__((unused))ch
 	char *cpy_cmd = NULL;
 	char *cmd = NULL;
 	size_t i = 0;
+	int c;
 	int x = 0;
 	int id = 0;
 	char *delim = " \n";
@@ -18,7 +19,7 @@ int main(__attribute__((unused))int argc, char **argv, __attribute__((unused))ch
 
 	while (getline(&cmd, &i, stdin) != -1)
 	{
-		cpy_cmd = strdup(cmd);
+		cpy_cmd = _strdup(cmd);
 
 		token = strtok(cmd, delim);
 
@@ -81,6 +82,12 @@ int main(__attribute__((unused))int argc, char **argv, __attribute__((unused))ch
 		free(cpy_cmd);
 
 	}
+
+	while((c = _getchar()) == EOF)
+	{
+		break;
+	}
+
 
 	free(cmd);
 
