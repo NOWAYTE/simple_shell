@@ -3,17 +3,22 @@
 int main(__attribute__((unused))int argc, char **argv, __attribute__((unused))char **envp)
 {
 	char *token = NULL;
+	DIR *dp;
+	char *path = NULL;
+	char *dir = NULL;
 	char *cpy_cmd = NULL;
 	char *cmd = NULL;
 	size_t i = 0;
 	int c;
 	int x = 0;
-	int id = 0;
+	pid_t id;
 	char *delim = " \n";
 
 	int argC = 0;
 	char **argV = NULL;
 	char **envP = NULL;
+
+	struct dirent *entry;
 
 	_print("($) ", STDOUT_FILENO);
 
@@ -51,26 +56,43 @@ int main(__attribute__((unused))int argc, char **argv, __attribute__((unused))ch
 
 		argV[x] = NULL;
 
-		id = fork();
+		path = _getenv("PATH");
 
-		if (id != 0)
+		dir = strtok(path, " : ");
+
+		while (dir != NULL)
 		{
-			wait(0);
+			dp = opendir(dir);
 
-		}
-		else
-		{
-			if (execve(argV[0], argV, envP) == -1)
+			if (dp != NULL)
 			{
-				_print(argv[0], STDOUT_FILENO);
-				_print(": ", STDOUT_FILENO);
-				_print("No such file or directory \n", STDOUT_FILENO);
+				while ((entry = readdir(dp)) != NULL)
+				{
+					if(_strcmp(entry->d_name, argV[0]) == 0)
+					{
+						id = fork();
 
-			}
-			else
-			{
-				_print("No such file or directory.. something went wrong ", STDOUT_FILENO);
+						if (id != 0)
+						{
+							wait(0);
+						}
 
+						else
+						{
+							if (execve(entry->d_name, argV, envP) == -1)
+							{
+								_print(argv[0], STDOUT_FILENO);
+								_print(": ", STDOUT_FILENO);
+								_print("No such file or directory \n", STDOUT_FILENO);
+
+							}
+							else
+							{
+								_print("No such file or directory.. something went wrong ", STDOUT_FILENO);
+							}
+						}
+					}
+				}
 			}
 		}
 
