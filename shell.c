@@ -4,7 +4,7 @@ int main()
 {
 	int argc = 0;
 	char **argv = NULL;
-	char *delim = " ";
+	char *delim = " \n";
 
 	char *token = NULL;
 	char *cpy_cmd = NULL;
@@ -25,13 +25,13 @@ int main()
 
 		while (token)
 		{
-			argc++;
 
 			token = strtok(NULL, delim);
+			argc++;
 
 		}
 
-		printf("%d", argc);
+		printf("%d \n", argc);
 
 		argv = malloc(sizeof(char *) * argc);
 
@@ -53,11 +53,16 @@ int main()
 
 		argv[x] = NULL;
 
-		while (argv)
+		for (x = 0; x < argc; x++)
 		{
-			printf("%s", argv[x++]);
+			printf("%s \n", argv[x]);
 
 		}
+
+		_print("($)", STDOUT_FILENO);
+		
+		argc = 0;
+		x = 0;
 
 	}
 
