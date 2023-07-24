@@ -6,7 +6,7 @@ int main(__attribute__((unused))int argc, char **argv, __attribute__((unused))ch
 	char *cpy_cmd = NULL;
 	char *cmd = NULL;
 	size_t i = 0;
-	int x = 1;
+	int x = 0;
 	int id = 0;
 	char *delim = " \n";
 
@@ -31,9 +31,8 @@ int main(__attribute__((unused))int argc, char **argv, __attribute__((unused))ch
 		}
 
 		argV = malloc(sizeof(char *) * argC);
-		*argV = argv[0];
 
-		if (argv == NULL)
+		if (argV == NULL)
 		{
 			return (-1);
 
@@ -60,7 +59,7 @@ int main(__attribute__((unused))int argc, char **argv, __attribute__((unused))ch
 		}
 		else
 		{
-			if (execve(argV[1], argV, envP) == -1)
+			if (execve(argV[0], argV, envP) == -1)
 			{
 				_print(argv[0], STDOUT_FILENO);
 				_print(": ", STDOUT_FILENO);
@@ -77,7 +76,7 @@ int main(__attribute__((unused))int argc, char **argv, __attribute__((unused))ch
 		_print("($)", STDOUT_FILENO);
 		
 		argC = 0;
-		x = 1;
+		x = 0;
 
 		free(cpy_cmd);
 
