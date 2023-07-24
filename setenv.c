@@ -2,16 +2,19 @@
 #include<stdlib.h>
 #include<string.h>
 
-void count()
+int _count()
 {
 	int count = 0;
 	extern char **environ;
 
-	while (environ)
+	while (*environ)
 	{
 		count++;
+		environ++;
 
 	}
+
+	return (count);
 
 }
 
@@ -19,6 +22,8 @@ int _setenv(const char *name, const char *value, int overwrite)
 {
 
 	extern char **environ;
+
+	int count = _count();
 
 	char *entry;
 	entry = malloc(strlen(name) + strlen(value) + 2);
@@ -31,7 +36,7 @@ int _setenv(const char *name, const char *value, int overwrite)
 
 	sprintf(entry, "%s=%s", name, value);
 
-	while (environ)
+	while (*environ)
 	{
 		if (strncmp(*environ, name, strlen(name)) == 0)
 		{
