@@ -2,11 +2,22 @@
 #include<stdlib.h>
 #include<string.h>
 
+void count()
+{
+	extern char *environ;
+
+	while (environ)
+	{
+		count++;
+
+	}
+
+}
+
 int _setenv(const char *name, const char *value, int overwrite)
 {
-	int i = 0;
 
-	extern char **environ;
+	extern char *environ;
 
 	char *entry;
 	entry = malloc(strlen(name) + strlen(value) + 2);
@@ -40,11 +51,10 @@ int _setenv(const char *name, const char *value, int overwrite)
 
 		}
 		environ++;
-		i++;
 
 	}
 
-	environ = realloc(environ, sizeof(char *) * (i + 1));
+	environ = realloc(environ, sizeof(char *) * (count + 1));
 
 	if (environ == NULL)
 	{
