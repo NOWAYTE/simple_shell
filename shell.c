@@ -1,28 +1,29 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<unistd.h>
-#include<string.h>
+#include "shell.h"
 
-int main(void)
+int main()
 {
+	int argc = 0;
+	char **argv = NULL;
+	char *delim = " ";
+
+	char *token = NULL;
+	char *cpy_cmd = NULL;
+
 
 	char *cmd = NULL;
 	size_t i = 0;
-	int n = 0;
-	int argc = 0;
-	char **argv = NULL;
-	char *token = NULL;
-	char *delim = " ";
-	char *cpy = NULL;
+	int x = 0;
 
-	printf("#cisfun$ ");
+
+	_print("($) ", STDOUT_FILENO);
 
 	while (getline(&cmd, &i, stdin) != -1)
 	{
-		cmd[strcspn(cmd, "\n")] = 0;
+		cpy_cmd = strdup(cmd);
+
 		token = strtok(cmd, delim);
 
-		while (token !=  NULL)
+		while (token)
 		{
 			argc++;
 
@@ -30,9 +31,9 @@ int main(void)
 
 		}
 
-		printf("%d\n", argc);
+		printf("%d", argc);
 
-		argv = malloc(sizeof(char *) * (argc + 1));
+		argv = malloc(sizeof(char *) * argc);
 
 		if (argv == NULL)
 		{
@@ -40,43 +41,29 @@ int main(void)
 
 		}
 
-		cpy = strdup(cmd);
+		token = strtok(cpy_cmd, delim);
 
-		token = strtok(cpy, delim);
-
-		for (n = 0; n < argc; n++)
+		while (token)
 		{
-			argv[n] = token;
+			argv[x] = token;
 
 			token = strtok(NULL, delim);
+			x++;
 		}
 
-		printf("%s \n", argv[0]);
-		printf("%s \n", argv[1]);
+		argv[x] = NULL;
 
 		while (argv)
 		{
-			printf("%s\n", argv[n++]);
+			printf("%s", argv[x++]);
 
 		}
-
-		printf("#cisfun$ ");
-
-		n = 0;
-		argc = 0;
-		
-		free(argv);
-		free(cpy);
 
 	}
 
 	free(cmd);
+	free(cpy_cmd);
 
 	return (0);
+
 }
-
-
-
-
-
-
