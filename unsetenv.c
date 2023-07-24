@@ -24,7 +24,7 @@ int _unsetenv(const char *name)
 	int i = 0;
 
 
-	char *n_environ = NULL;
+	char **n_environ = NULL;
 
 	while (*environ)
 	{
@@ -44,7 +44,7 @@ int _unsetenv(const char *name)
 	{
 		if (strncmp(*environ, name, strlen(name)) != 0)
 		{
-			n_environ[i++] = (char )*environ;
+			n_environ[i++] = *environ;
 
 		}
 	}
