@@ -1,22 +1,18 @@
 #include "shell.h"
 
-int main()
+int main(int argc, char **argv, char **envp)
 {
-	int argc = 0;
-	int id;
-	char **argv = NULL;
-	char *delim = " \n";
-	char **envp = NULL;
-
 	char *token = NULL;
 	char *cpy_cmd = NULL;
-
-
 	char *cmd = NULL;
 	size_t i = 0;
-	int x = 0;
+	int x = 1;
+	int id = 0;
+	char *delim = " \n";
 
-
+	argc = 0;
+	argv = NULL;
+	envp = NULL;
 	_print("($) ", STDOUT_FILENO);
 
 	while (getline(&cmd, &i, stdin) != -1)
@@ -62,8 +58,9 @@ int main()
 		}
 		else
 		{
-			if (execve(argv[0], argv, envp) == -1)
+			if (execve(argv[1], argv, envp) == -1)
 			{
+				_print(argv[0], STDOUT_FILENO);
 				_print("No such file or directory \n", STDOUT_FILENO);
 
 			}
@@ -77,7 +74,7 @@ int main()
 		_print("($)", STDOUT_FILENO);
 		
 		argc = 0;
-		x = 0;
+		x = 1;
 
 		free(cpy_cmd);
 
