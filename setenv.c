@@ -4,7 +4,8 @@
 
 void count()
 {
-	extern char *environ;
+	int count = 0;
+	extern char **environ;
 
 	while (environ)
 	{
@@ -17,7 +18,7 @@ void count()
 int _setenv(const char *name, const char *value, int overwrite)
 {
 
-	extern char *environ;
+	extern char **environ;
 
 	char *entry;
 	entry = malloc(strlen(name) + strlen(value) + 2);
@@ -64,7 +65,7 @@ int _setenv(const char *name, const char *value, int overwrite)
 
 	}
 
-	environ[i++] = entry;
+	environ[count++] = entry;
 
 	return (0);
 

@@ -6,7 +6,7 @@
 void count()
 {
 	extern char *environ;
-	count = 0;
+	int count = 0;
 	while (environ)
 	{
 		count++;
