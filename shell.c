@@ -1,6 +1,6 @@
 #include "shell.h"
 
-int main(int argc, char **argv, char **envp)
+int main(__attribute__((unused))int argc, char **argv, __attribute__((unused))char **envp)
 {
 	char *token = NULL;
 	char *cpy_cmd = NULL;
@@ -10,9 +10,10 @@ int main(int argc, char **argv, char **envp)
 	int id = 0;
 	char *delim = " \n";
 
-	argc = 0;
-	argv = NULL;
-	envp = NULL;
+	int argC = 0;
+	char **argV = NULL;
+	char **envP = NULL;
+
 	_print("($) ", STDOUT_FILENO);
 
 	while (getline(&cmd, &i, stdin) != -1)
@@ -25,11 +26,12 @@ int main(int argc, char **argv, char **envp)
 		{
 
 			token = strtok(NULL, delim);
-			argc++;
+			argC++;
 
 		}
 
-		argv = malloc(sizeof(char *) * argc);
+		argV = malloc(sizeof(char *) * argC);
+		*argV = argv[0];
 
 		if (argv == NULL)
 		{
@@ -41,13 +43,13 @@ int main(int argc, char **argv, char **envp)
 
 		while (token)
 		{
-			argv[x] = token;
+			argV[x] = token;
 
 			token = strtok(NULL, delim);
 			x++;
 		}
 
-		argv[x] = NULL;
+		argV[x] = NULL;
 
 		id = fork();
 
@@ -58,9 +60,10 @@ int main(int argc, char **argv, char **envp)
 		}
 		else
 		{
-			if (execve(argv[1], argv, envp) == -1)
+			if (execve(argV[1], argV, envP) == -1)
 			{
 				_print(argv[0], STDOUT_FILENO);
+				_print(": ", STDOUT_FILENO);
 				_print("No such file or directory \n", STDOUT_FILENO);
 
 			}
@@ -73,7 +76,7 @@ int main(int argc, char **argv, char **envp)
 
 		_print("($)", STDOUT_FILENO);
 		
-		argc = 0;
+		argC = 0;
 		x = 1;
 
 		free(cpy_cmd);
