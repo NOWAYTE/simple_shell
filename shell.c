@@ -3,8 +3,10 @@
 int main()
 {
 	int argc = 0;
+	int id;
 	char **argv = NULL;
 	char *delim = " \n";
+	char **envp = NULL;
 
 	char *token = NULL;
 	char *cpy_cmd = NULL;
@@ -31,8 +33,6 @@ int main()
 
 		}
 
-		printf("%d \n", argc);
-
 		argv = malloc(sizeof(char *) * argc);
 
 		if (argv == NULL)
@@ -53,10 +53,25 @@ int main()
 
 		argv[x] = NULL;
 
-		for (x = 0; x < argc; x++)
-		{
-			printf("%s \n", argv[x]);
+		id = fork();
 
+		if (id != 0)
+		{
+			wait(0);
+
+		}
+		else
+		{
+			if (execve(argv[0], argv, envp) == -1)
+			{
+				_print("No such file or directory \n", STDOUT_FILENO);
+
+			}
+			else
+			{
+				_print("No such file or directory.. something went wrong ", STDOUT_FILENO);
+
+			}
 		}
 
 		_print("($)", STDOUT_FILENO);
@@ -64,10 +79,11 @@ int main()
 		argc = 0;
 		x = 0;
 
+		free(cpy_cmd);
+
 	}
 
 	free(cmd);
-	free(cpy_cmd);
 
 	return (0);
 
