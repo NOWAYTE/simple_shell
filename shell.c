@@ -68,7 +68,7 @@ int main(__attribute__((unused))int argc, char **argv, __attribute__((unused))ch
 			{
 				while ((entry = readdir(dp)) != NULL)
 				{
-					if(_strcmp(entry->d_name, argV[0]) == 0 && access(entry->d_name, X_OK) == 0)
+					if((_strcmp(entry->d_name, argV[0])) == 0 && (access(entry->d_name, X_OK)) == 0)
 					{
 						id = fork();
 
