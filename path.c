@@ -20,3 +20,11 @@ void print_path()
 	}
 
 }
+
+int main()
+{
+	print_path();
+
+	return (0);
+
+}

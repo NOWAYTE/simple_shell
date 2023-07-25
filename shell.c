@@ -60,8 +60,6 @@ int main(__attribute__((unused))int argc, char **argv, __attribute__((unused))ch
 
 		dir = strtok(path, " : ");
 
-		printf("%s", path);
-
 		while (dir != NULL)
 		{
 			dp = opendir(dir);
