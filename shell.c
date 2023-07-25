@@ -1,6 +1,6 @@
 #include "shell.h"
 
-int main(__attribute__((unused))int argc, char **argv, __attribute__((unused))char **envp)
+int main(__attribute__((unused))int argc, char **argv, char **envp)
 {
 	char *token = NULL;
 	DIR *dp;
@@ -16,7 +16,6 @@ int main(__attribute__((unused))int argc, char **argv, __attribute__((unused))ch
 
 	int argC = 0;
 	char **argV = NULL;
-	char **envP = NULL;
 
 	struct dirent *entry;
 
@@ -79,7 +78,7 @@ int main(__attribute__((unused))int argc, char **argv, __attribute__((unused))ch
 
 						else
 						{
-							if (execve(entry->d_name, argV, envP) == -1)
+							if (execve(entry->d_name, argV, envp) == -1)
 							{
 								_print(argv[0], STDOUT_FILENO);
 								_print(": ", STDOUT_FILENO);
