@@ -67,6 +67,16 @@ int main(__attribute__((unused))int argc, char **argv, char **envp)
 			{
 				while ((entry = readdir(dp)) != NULL)
 				{
+					if (entry == NULL)
+					{
+						printf("Entry is NULL");
+
+					}
+					else
+					{
+						printf("entry->d_name %s \n", entry->d_name);
+
+					}
 					if ((access(entry->d_name, X_OK)) == 0)
 					{
 						if ((_strcmp(entry->d_name, argV[0])) == 0)
