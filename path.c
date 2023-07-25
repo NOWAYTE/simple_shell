@@ -1,11 +1,15 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+#include<dirent.h>
+#include<unistd.h>
 
 void print_path()
 {
 	char *path;
 	char *token;
+	DIR *dp;
+	struct dirent *entry;
 
 	path = getenv("PATH");
 
@@ -13,11 +17,25 @@ void print_path()
 
 	while (token)
 	{
-		printf("%s \n", token);
+		dp = opendir(token);
 
-		token = strtok(NULL, " : ");
+		if(dp != NULL)
+		{
+			while ((entry = readdir(dp)) != NULL)
+			{
+				if (access(entry->d_name, X_OK) == 0)
+				{
+					if (strcmp(entry->d_name, "ls") == 0)
+					{
+						printf("%s", entry->d_name);
 
+					}
+				}
+			}
+		}
 	}
+
+	token = strtok(NULL, " : ");
 
 }
 
