@@ -5,13 +5,10 @@ int main(__attribute__((unused))int argc, char **argv, char **envp)
 	char *token = NULL;
 	DIR *dp;
 	char *path = NULL;
-	char *path_copy = NULL;
 	char *dir = NULL;
 	char *cpy_cmd = NULL;
 	char *cmd = NULL;
 	size_t i = 0;
-	int found = 0;
-	int status;
 	int c;
 	int x = 0;
 	pid_t id;
@@ -25,6 +22,7 @@ int main(__attribute__((unused))int argc, char **argv, char **envp)
 	_print("($) ", STDOUT_FILENO);
 
 	while (getline(&cmd, &i, stdin) != -1)
+	{
 		cpy_cmd = _strdup(cmd);
 
 		token = strtok(cmd, delim);
@@ -58,58 +56,58 @@ int main(__attribute__((unused))int argc, char **argv, char **envp)
 		argV[x] = NULL;
 
 		path = _getenv("PATH");
-		path_copy = _strdup(path);
 
-		token = strtok(path_copy, ":");
+		dir = strtok(path, " : ");
 
-		while (token)
+		while (dir != NULL)
 		{
-		
-			char cmd[1024];
+			dp = opendir(dir);
 
-			sprintf(cmd, "%s/%s", token, argV[0]);
-
-			if (access(cmd, X_OK) == 0)
+			if (dp != NULL)
 			{
-				found = 1;
-				break;
-			}
-
-			free(path_copy);
-
-			if (!found)
-			{
-				perror("No such file or directory ");
-				continue;
-			}
-
-			id = fork();
-
-			if (id == 0)
-			{
-				execve(argV[0], argV, envp);
-				exit(EXIT_FAILURE);
-
-			}
-			else if(id < 0)
-			{
-				perror("Error");
-
-			}
-			else
-			{
-				do
+				while ((entry = readdir(dp)) != NULL)
 				{
-					waitpid(id, &status, WUNTRACED);
+					if((_strcmp(entry->d_name, argV[0])) == 0 && (access(entry->d_name, X_OK)) == 0)
+					{
+						id = fork();
+
+						if (id != 0)
+						{
+							wait(0);
+						}
+
+						else
+						{
+							if (execve(entry->d_name, argV, envp) == -1)
+							{
+								_print(argv[0], STDOUT_FILENO);
+								_print(": ", STDOUT_FILENO);
+								_print("No such file or directory \n", STDOUT_FILENO);
+
+							}
+							else
+							{
+								_print("No such file or directory.. something went wrong ", STDOUT_FILENO);
+							}
+						}
+					}
 				}
+
+				closedir(dp);
 			}
+
+			dir = strtok(NULL, ":");
 		}
 
 		_print("($)", STDOUT_FILENO);
+		
 		argC = 0;
 		x = 0;
+
 		free(cpy_cmd);
+
 	}
+
 	while((c = _getchar()) == EOF)
 	{
 		break;
