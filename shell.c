@@ -2,120 +2,91 @@
 
 int main(__attribute__((unused))int argc, char **argv, char **envp)
 {
-	char *token = NULL;
-	DIR *dp;
-	char *path = NULL;
-	char *dir = NULL;
-	char *cpy_cmd = NULL;
-	char *cmd = NULL;
-	size_t i = 0;
-	int c;
-	int x = 0;
-	pid_t id;
-	char *delim = " \n";
+    char *token = NULL;
+    char *cpy_cmd = NULL;
+    char *cmd = NULL;
+    size_t i = 0;
+    int c;
+    int x = 0;
+    pid_t id;
+    char *delim = " \n";
 
-	int argC = 0;
-	char **argV = NULL;
+    int argC = 0;
+    char **argV = NULL;
 
-	struct dirent *entry;
+    while (1)
+    {
+        _print("($) ", STDOUT_FILENO);
+        if (getline(&cmd, &i, stdin) == -1)
+            break;
 
-	_print("($) ", STDOUT_FILENO);
+        cpy_cmd = _strdup(cmd);
 
-	while (getline(&cmd, &i, stdin) != -1)
-	{
-		cpy_cmd = _strdup(cmd);
+        token = strtok(cmd, delim);
 
-		token = strtok(cmd, delim);
+        while (token)
+        {
+            token = strtok(NULL, delim);
+            argC++;
+        }
 
-		while (token)
-		{
+        argV = malloc(sizeof(char *) * (argC + 1));
 
-			token = strtok(NULL, delim);
-			argC++;
+        if (argV == NULL)
+        {
+            return (-1);
+        }
 
-		}
+        argV[x] = strtok(cpy_cmd, delim);
 
-		argV = malloc(sizeof(char *) * argC);
+        while (argV[x] != NULL)
+        {
+            x++;
+            argV[x] = strtok(NULL, delim);
+        }
 
-		if (argV == NULL)
-		{
-			return (-1);
+        argV[x] = NULL;
 
-		}
+        if (_strcmp(argV[0], "ls") == 0)
+        {
+            // Use execvp to search for the command in the PATH
+            execvp(argV[0], argV);
 
-		token = strtok(cpy_cmd, delim);
+            // If execvp returns, the command was not found
+            _print(argv[0], STDOUT_FILENO);
+            _print(": ", STDOUT_FILENO);
+            _print("command not found\n", STDOUT_FILENO);
 
-		while (token)
-		{
-			argV[x] = token;
+            // Free memory and start over
+            free(cpy_cmd);
+            free(argV);
+            argC = 0;
+            x = 0;
+            continue;
+        }
 
-			token = strtok(NULL, delim);
-			x++;
-		}
+        id = fork();
 
-		argV[x] = NULL;
+        if (id != 0)
+        {
+            wait(NULL);
+        }
+        else
+        {
+            execve(argV[0], argV, envp);
+            _print(argv[0], STDOUT_FILENO);
+            _print(": ", STDOUT_FILENO);
+            _print("command not found\n", STDOUT_FILENO);
+            exit(EXIT_FAILURE);
+        }
 
-		path = _getenv("PATH");
+        free(cpy_cmd);
+        free(argV);
+        argC = 0;
+        x = 0;
+    }
 
-		dir = strtok(path, " : ");
+    free(cmd);
 
-		while (dir != NULL)
-		{
-			dp = opendir(dir);
-
-			if (dp != NULL)
-			{
-				while ((entry = readdir(dp)) != NULL)
-				{
-					if((_strcmp(entry->d_name, argV[0])) == 0 && (access(entry->d_name, X_OK)) == 0)
-					{
-						id = fork();
-
-						if (id != 0)
-						{
-							wait(0);
-						}
-
-						else
-						{
-							if (execve(entry->d_name, argV, envp) == -1)
-							{
-								_print(argv[0], STDOUT_FILENO);
-								_print(": ", STDOUT_FILENO);
-								_print("No such file or directory \n", STDOUT_FILENO);
-
-							}
-							else
-							{
-								_print("No such file or directory.. something went wrong ", STDOUT_FILENO);
-							}
-						}
-					}
-				}
-
-				closedir(dp);
-			}
-
-			dir = strtok(NULL, ":");
-		}
-
-		_print("($)", STDOUT_FILENO);
-		
-		argC = 0;
-		x = 0;
-
-		free(cpy_cmd);
-
-	}
-
-	while((c = _getchar()) == EOF)
-	{
-		break;
-	}
-
-
-	free(cmd);
-
-	return (0);
-
+    return (0);
 }
