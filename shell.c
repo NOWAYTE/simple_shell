@@ -170,4 +170,4 @@ int function_finder(char **argv, char *buffer)
 		}
 	}
 	return (0);
-}oi
+}
