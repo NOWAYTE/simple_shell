@@ -50,9 +50,9 @@ void _strcpy(char *, char *);
 /*helpers2*/
 int _strcmp(char *, char *);
 char *_strcat(char *, char *);
-int _strspn(char *, char *);
-int _strcspn(char *, char *);
-char *_strchr(char *, char);
+int _strspn(const char* s, const char* accept);
+char *_strchr(const char* s, int c);
+size_t _strcspn(const char* s, const char* reject);
 
 /*helpers3*/
 char *_strtok_r(char *, char *, char **);
