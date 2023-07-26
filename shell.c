@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <sys/types.h>
 #include <sys/wait.h>
 
 #define MAX_COMMAND_LENGTH 100
@@ -25,7 +24,7 @@ void execute_command(char* command) {
         exit(1);
     } else if (pid == 0) {
         // child process
-        char* args[2] = {command, NULL};
+        char* args[4] = {"/bin/bash", "-c", command, NULL};
         if (execvp(args[0], args) < 0) {
             printf("Error: command not found\n");
             exit(1);
