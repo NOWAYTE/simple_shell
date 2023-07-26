@@ -16,7 +16,7 @@ void path()
 
 	token = strtok(path, ":");
 
-	while (token)
+	while (token != NULL)
 	{
 		dp = opendir(token);
 

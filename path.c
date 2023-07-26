@@ -23,7 +23,6 @@ void print_path()
 		{
 			while ((entry = readdir(dp)) != NULL)
 			{
-
 				if (access(entry->d_name, X_OK) == 0)
 				{
 					if (strcmp(entry->d_name, "ls") == 0)
