@@ -1,63 +1,65 @@
-#include "shell.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/wait.h>
 
+#define MAX_COMMAND_LENGTH 100
+#define MAX_ARGUMENTS_COUNT 10
 
-	char **commands = NULL;
-	char *line = NULL;
-	char *shell_name = NULL;
-	int status = 0;
-
-/**
- * main - the main shell code
- * @argc: number of arguments passed
- * @argv: program arguments to be parsed
- *
- * applies the functions in utils and helpers
- * implements EOF
- * Prints error on Failure
- * Return: 0 on success
- */
-
-
-int main(int argc __attribute__((unused)), char **argv)
-{
-	char **current_command = NULL;
-	int i, type_command = 0;
-	size_t n = 0;
-
-	signal(SIGINT, ctrl_c_handler);
-	shell_name = argv[0];
-	while (1)
-	{
-		non_interactive();
-		print(" ($) ", STDOUT_FILENO);
-		if (getline(&line, &n, stdin) == -1)
-		{
-			free(line);
-			exit(status);
-		}
-			remove_newline(line);
-			remove_comment(line);
-			commands = tokenizer(line, ";");
-
-		for (i = 0; commands[i] != NULL; i++)
-		{
-			current_command = tokenizer(commands[i], " ");
-			if (current_command[0] == NULL)
-			{
-				free(current_command);
-				break;
-			}
-			type_command = parse_command(current_command[0]);
-
-			/* initializer -   */
-			initializer(current_command, type_command);
-			free(current_command);
-		}
-		free(commands);
-	}
-	free(line);
-
-	return (status);
+void prompt() {
+    printf("#cisfun$ ");
 }
 
-	
+char* read_command() {
+    char* command = malloc(MAX_COMMAND_LENGTH * sizeof(char));
+    fgets(command, MAX_COMMAND_LENGTH, stdin);
+    return command;
+}
+
+void execute_command(char* command) {
+    char* arguments[MAX_ARGUMENTS_COUNT];
+    int argument_count = 0;
+
+    // split the command into arguments
+    char* argument = strtok(command, " \t\n");
+    while (argument != NULL) {
+        arguments[argument_count++] = argument;
+        argument = strtok(NULL, " \t\n");
+    }
+    arguments[argument_count] = NULL;
+
+    pid_t pid = fork();
+
+    if (pid < 0) {
+        printf("Error: fork failed\n");
+        exit(1);
+    } else if (pid == 0) {
+        // child process
+        if (execvp(arguments[0], arguments) < 0) {
+            printf("Error: command not found\n");
+            exit(1);
+        }
+    } else {
+        // parent process
+        wait(NULL);
+    }
+}
+
+int main() {
+    while (1) {
+        prompt();
+
+        char* command = read_command();
+        if (strlen(command) == 0) {
+            // empty input
+            continue;
+        }
+
+        execute_command(command);
+
+        free(command);
+    }
+
+    return 0;
+}
