@@ -25,7 +25,6 @@ int main(__attribute__((unused))int argc, char **argv, char **envp)
 	_print("($) ", STDOUT_FILENO);
 
 	while (getline(&cmd, &i, stdin) != -1)
-	{
 		cpy_cmd = _strdup(cmd);
 
 		token = strtok(cmd, delim);
@@ -65,6 +64,7 @@ int main(__attribute__((unused))int argc, char **argv, char **envp)
 
 		while (token)
 		{
+		
 			char cmd[1024];
 
 			sprintf(cmd, "%s/%s", token, argV[0]);
@@ -91,7 +91,7 @@ int main(__attribute__((unused))int argc, char **argv, char **envp)
 				exit(EXIT_FAILURE);
 
 			}
-			else if
+			else if(id < 0)
 			{
 				perror("Error");
 
@@ -106,12 +106,8 @@ int main(__attribute__((unused))int argc, char **argv, char **envp)
 		}
 
 		_print("($)", STDOUT_FILENO);
-
-
-		
 		argC = 0;
 		x = 0;
-
 		free(cpy_cmd);
 	}
 	while((c = _getchar()) == EOF)
