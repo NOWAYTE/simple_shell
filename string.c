@@ -1,86 +1,112 @@
 #include "shell.h"
 
 /**
- * _strcmp - compares two strings to see if they are the same
- * @s1: string 1
- * @s2: string 2
- * Return: s1[i] - s2[j] on failure or 0 on success
+ * _strcmp - compares strings
+ * @s1: string
+ * @s2: string
+ * Return: 0 on success
 **/
 int _strcmp(char *s1, char *s2)
 {
-	int i = 0, j = 0;
+	int k = 0, l = 0;
 
-	for (; s1[i] != '\0' || s2[j] != '\0'; i++, j++)
+
+	for (; s1[k] != '\0' || s2[l] != '\0'; k++, l++)
 	{
-		if (s1[i] != s2[j])
+
+		if (s1[k] != s2[l])
 		{
-			return (s1[i] - s2[j]);
+
+			return (s1[k] - s2[l]);
 		}
 	}
-return (0);
+
+
+	return (0);
 }
 
 /**
- * s_len - gets the length of a string
+ * s_len - gets length
+ *
  * @s: a string
- * Return: length of string
+ *
+ * Return: length
 **/
 int s_len(char *s)
 {
-	int i;
+	int x;
 
-	for (i = 0; s[i] != '\0'; i++)
+	for (x = 0; s[x] != '\0'; x++)
 	{}
-		return (i);
+
+		return (x);
 }
 
 /**
- * _strdup - duplicates a string
- * @str: string to duplicate
- * Return: NULL on failure or a pointer to the new string on success
+ * _strdup - duplicates  string
+ * @s: string
+ *
+ * Return: returns  pointer to new
 **/
-char *_strdup(char *str)
+char *_strdup(char *s)
 {
-	char *duplicate = NULL;
+	char *d = NULL;
 	int i;
-	int len = 0;
+	int l = 0;
 
-	if (str == NULL)
+	if (s == NULL)
+
 		return (NULL);
-	for (len = 0; str[len] != '\0'; len++)
+
+	for (l = 0; s[l] != '\0'; l++)
 		;
-	duplicate = malloc((len + 1) * sizeof(char));
-	if (duplicate == NULL)
+	d = malloc((l + 1) * sizeof(char));
+	if (d == NULL)
+
 		return (NULL);
-	for (i = 0; i <= len; i++)
-		duplicate[i] = str[i];
-return (duplicate);
+
+	for (i = 0; i <= l; i++)
+
+		d[i] = s[i];
+
+
+
+	return (d);
+
 }
 
 /**
- * _putchar - writes a single character to stdout
- * @c: character to write
+ * _putchar - writes a  character
+ * @c: character
+ *
  * Return: the character
 **/
 int _putchar(char c)
 {
+
 	return (write(1, &c, 1));
 }
 
 /**
- * d_free - frees double pointers
- * @dubbie_pointie: a double pointer
+ * d_free -  pointers
+ * @d_poin: a double pointer
  * Return: void
 **/
-void d_free(char **dubbie_pointie)
+void d_free(char **d_poin)
 {
 	int i = 0;
 
-	while (dubbie_pointie[i])
+
+	while (d_poin[i])
 	{
-		free(dubbie_pointie[i]);
+		free(d_poin[i]);
+
 		i++;
+
+
 	}
-	free(dubbie_pointie);
+
+
+	free(d_poin);
 }
 

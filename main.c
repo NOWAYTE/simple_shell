@@ -1,24 +1,23 @@
 #include "shell.h"
-
 /**
- * main – Entry to the program
- * description: main function
+ * main - Entry to the program
  * @argc: argument count 
  * @argv: argument vector
- * Return: Always 0 (success)
+ *
+ * Return: Always 0 (succees)
+ *
  */
 int main(int argc, char **argv)
 {
 	s_loop(argc, argv);
 	return (0);
 }
-
 /**
- * s_loop – runs the shell repeatedly
- * description: exit terminates this loop
+ * s_loop - runs the loop repeatedly
  * @argc: argument count
  * @argv: argument vector
- * Return: 0
+ *
+ * Return: NUll 
  */
 int s_loop(int argc, char **argv)
 {
@@ -89,7 +88,7 @@ char **token(char *user)
 	int i;
 
 	strtok(user, "\n");
-	for (i = 0;user[i] != '\0'; i++)
+	for (i = 0; user[i] != '\0'; i++)
 	{
 		if (user[i] == ' ')
 		{
@@ -117,7 +116,7 @@ char **token(char *user)
 /**
  * exec - executes command
  * @as: pointer charcter
- * @argv: pointer to string 
+ * @argv: pointer to string
  *
  * Return: 0
  */
