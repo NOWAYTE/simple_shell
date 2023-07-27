@@ -1,82 +1,106 @@
 #include "shell.h"
 /**
- * s_dir - searches through the PATH for a matching command
- * @argv: array of strings containing our tokend arguments
- * @path_tokens: array of strings containing our tokend PATH
- * Return: modified argv[0]
+ * s_dir - searches the path
+ *
+ * @argv: argument vector
+ * @path: array of strings
+ * Return: argv
 **/
-char *s_dir(char **argv, char **path_tokens)
+
+
+char *s_dir(char **argv, char **path)
 {
-	struct dirent *dir_store;
-	DIR *deer = NULL;
+	struct dirent *d_st;
+	DIR *d = NULL;
 	int i;
-	char *asdf = NULL;
-	char *store = NULL;
+	char *a = NULL;
+	char *st = NULL;
 
 	if (argv[0][0] == '/')
+
 		return (argv[0]);
-	for (i = 0; path_tokens[i] != NULL; i++)
+
+	for (i = 0; path[i] != NULL; i++)
 	{
-		deer = opendir(path_tokens[i]);
-		while ((dir_store = readdir(deer)) != NULL)
+
+		d = opendir(path[i]);
+
+		while ((d_st = readdir(d)) != NULL)
 		{
-			if (_strcmp(argv[0], dir_store->d_name) == 0)
+
+			if (_strcmp(argv[0], d_st->d_name) == 0)
 			{
-				asdf = path_tokens[i];
-				store = executable_maker(asdf, argv);
-				closedir(deer);
-				return (store);
+
+				a = path[i];
+
+				st = executable_maker(a, argv);
+				closedir(d);
+				return (st);
 			}
 		}
-	closedir(deer);
+
+
+	closedir(d);
+
 	}
+
 	return (NULL);
 }
 
 /**
- * executable_maker- modifies argv[0] into an executable
- * @asdf: stores the path of the correct directory
+ * executable_maker- modifies argv
+ *
+ * @as: stores the path of the correct directory
  * @argv: argv[0] is concatenated to asdf
  * Return: modified asdf
 **/
-char *executable_maker(char *asdf, char **argv)
+char *executable_maker(char *as, char **argv)
 {
-	char *addslash = NULL;
-	char *newcmd = NULL;
+	char *ad = NULL;
+	char *n = NULL;
 
-	addslash = _strcat(asdf, "/");
-	newcmd = _strcat(addslash, argv[0]);
-	free(addslash);
-return (newcmd);
+	ad = _strcat(as, "/");
+
+	n = _strcat(ad, argv[0]);
+
+	free(ad);
+
+return (n);
 
 }
 /**
-*_strcat- entry point
-*description: concatenates two strings
-*@dest: string to copy to
-*@src: string to be copied
+*_strcat- concatenates two strings
+*@d: string to copy to
+*@s: string to be copied
 *Return: dest
 **/
-char *_strcat(char *dest, char *src)
-{
-	int a, p, x;
-	char *newcmd = NULL;
 
-	for (p = 0; dest[p] != '\0'; p++)
+char *_strcat(char *d, char *s)
+{
+	int a, b, c;
+	char *n = NULL;
+
+	for (b = 0; d[b] != '\0'; b++)
 	{}
-	for (a = 0; src[a] != '\0'; a++)
+	for (a = 0; s[a] != '\0'; a++)
 	{}
-	newcmd = malloc(sizeof(char) * (a + p + 1));
-	for (x = 0; x < p; x++)
+	n = malloc(sizeof(char) * (a + b + 1));
+
+
+	for (c = 0; c < b; c++)
 	{
-		newcmd[x] = dest[x];
+		n[c] = d[c];
 	}
-	for (x = 0; x < a; x++)
+
+
+	for (c = 0; c < a; c++)
 	{
-		newcmd[x + p] = src[x];
+		n[c + b] = s[c];
 	}
-	newcmd[x + p] = '\0';
-	return (newcmd);
+	n[c + b] = '\0';
+
+
+	return (n);
 }
 
 
@@ -98,19 +122,21 @@ int sh_alias(char **argv)
 }
 
 #include "shell.h"
-
 /**
- * s_exit - this exits the shell
- * description: exit builtin
- * @argv: argv
- * @buffer: buffer
+ * s_exit -exits the shell
+ *
+ * @argv: argumnet vector
+ *
+ * @buf: buffer
+ *
+ *
  * Return: 0
  */
 
-int s_exit(char **argv, char *buffer)
+int s_exit(char **argv, char *buf)
 {
 	free(argv);
-	free(buffer);
+	free(buf);
 	exit(0);
 }
 
@@ -124,25 +150,32 @@ int s_env(void)
 	int i;
 	int j;
 
-	char *string = NULL;
+	char *st = NULL;
 
 	for (i = 0; environ[i] != NULL; i++)
 	{
 		for (j = 0; environ[i][j] != '\0'; j++)
 		{
-			string = (&(environ[i][j]));
-			write(STDOUT_FILENO, string, s_len(string));
+			st = (&(environ[i][j]));
+
+			write(STDOUT_FILENO, st, s_len(st));
+
 			break;
 		}
+
 		_putchar('\n');
 	}
 	return (0);
 }
 /**
-* s_setenv - sets the env
-* @argv: arguments
+* s_setenv - sets env
+* @argv: argument vector
+*
 * Return: 0
+*
 */
+
+
 int s_setenv(char **argv)
 {
 	argv = argv;
@@ -150,10 +183,14 @@ int s_setenv(char **argv)
 }
 
 /**
-* s_unsetenv - unsets the env
-* @argv: arguments
+* s_unsetenv - unsets env
+* @argv: argument vector
+*
+*
 * Return: 0
 */
+
+
 int s_unsetenv(char **argv)
 {
 	argv = argv;
@@ -161,8 +198,11 @@ int s_unsetenv(char **argv)
 }
 
 /**
- * s_cd - changes current directory
- * @argv: arguments
+ * s_cd - changes directory
+ *
+ * @argv: argument vector
+ *
+ *
  * Return: 0
 **/
 int s_cd(char **argv)
