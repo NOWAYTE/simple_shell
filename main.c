@@ -22,128 +22,146 @@ int main(int argc, char **argv)
  */
 int s_loop(int argc, char **argv)
 {
-	int userinput;
-	char *buffer = NULL;
-	size_t bufsize;
+	int user;
+
+	char *buf = NULL;
+	size_t buf_s;
 	char *prompt = "$ ";
-	char **path_tokens = NULL;
-	char *executable = NULL;
+	char **t_path = NULL;
+	char *execut = NULL;
 
 	(void) argc;
 
-	buffer = NULL;
+	buf = NULL;
 	while (1)
 	{
-		/* buffer = malloc(sizeof(char) * bufsize);*/
+		/* buf = malloc(sizeof(char) * bufsize);*/
 		   /* if (buffer == NULL) */
 		   /* perror("Malloc failure\n"); */
 		if (isatty(STDIN_FILENO))
 		{
 			write(STDOUT_FILENO, prompt, s_len(prompt));
 		}
-		userinput = getline(&buffer, &bufsize, stdin);
-		if (userinput == -1)
+		user = getline(&buf, &buf_s, stdin);
+		if (user == -1)
 			break;
-		argv = token(buffer);
+
+		argv = token(buf);
+
 		if (argv[0] == NULL)
 			continue;
-		if (fin_fun(argv, buffer) == 1)
+		if (fin_fun(argv, buf) == 1)
 		{
 			free(argv);
 			continue;
+
 		}
-		path_tokens = _get_env("PATH");
-		executable = s_dir(argv, path_tokens);
-		exec(executable, argv);
-		d_free(path_tokens);
+		t_path = _get_env("PATH");
+
+		execut = s_dir(argv, t_path);
+
+		exec(execut, argv);
+
+		d_free(t_path);
 		if (argv[0][0] != '/')
-			free(executable);
+
+			free(execut);
+
 		free(argv);
 	}
-	free(buffer);
+	free(buf);
 return (0);
 }
 
 /**
- * token - token user input
- * description: to breakdown command
- * @userinput:command
+ * token - token user
+ * @user: command
  * Return: 0
+ *
  */
-char **token(char *userinput)
+
+char **token(char *user)
 {
-	int token_inc = 0;
+	int t_inc = 0;
 	char *token = NULL;
 	char **argv = NULL;
-	int tokencount = 0;
+	int t_count = 0;
 	int i;
 
-	strtok(userinput, "\n");
-	for (i = 0;userinput[i] != '\0'; i++)
+	strtok(user, "\n");
+	for (i = 0;user[i] != '\0'; i++)
 	{
-		if (userinput[i] == ' ')
+		if (user[i] == ' ')
 		{
-			tokencount++;
+			t_count++;
 		}
 	}
-	argv = malloc(8 * (tokencount + 2));
+	argv = malloc(8 * (t_count + 2));
 	if (argv != NULL)
 	{
-		token_inc = 0;
-		token = strtok(userinput, " ");
-		while (token_inc < (tokencount + 1))
+		t_inc = 0;
+		token = strtok(user, " ");
+		while (t_inc < (t_count + 1))
 		{
-			argv[token_inc] = token;
+			argv[t_inc] = token;
 			token = strtok(NULL, " ");
-			token_inc++;
+			t_inc++;
 		}
-		argv[token_inc] = NULL;
+		argv[t_inc] = NULL;
 	}
 
-	/*free(userinput);*/
+	/*free(user);*/
 	return (argv);
 }
 
 /**
- * exec - executes the command given
- * description: by forking and execing
- * @asdf: asdf
- * @argv: argv
+ * exec - executes command
+ * @as: pointer charcter
+ * @argv: pointer to string 
+ *
  * Return: 0
  */
 
-int exec(char *asdf, char **argv)
+int exec(char *as, char **argv)
 {
 	pid_t child_pid;
 
 	child_pid = fork();
+
 	if (child_pid == -1)
+
 		perror("Fork failure\n");
 	if (child_pid == 0)
 	{
-		execve(asdf, argv, environ);
+
+		execve(as, argv, environ);
 	}
 	else
 	{
 		wait(NULL);
 	}
+
 	/*free(argv);*/
 	return (0);
 }
 
 
 /**
- * fin_fun - for builtins
- * description: searches and compares to see if the command is a builtin
+ * fin_fun - searches and compare
  * @argv: argv
- * @buffer: buffer
+ *
+ * @buf: buffer
  * Return: 0
+ *
  */
-int fin_fun(char **argv, char *buffer)
-{
-	int i;
 
-	builtins arr[] = {
+int fin_fun(char **argv, char *buf)
+{
+	int x;
+
+
+
+	builtins st[] = {
 		{"cd", s_cd},
 		{"env", s_env},
 		{"exit", s_exit},
@@ -157,18 +175,28 @@ int fin_fun(char **argv, char *buffer)
 	{
 		if (_strcmp(argv[0], "exit") == 0)
 		{
-			s_exit(argv, buffer);
+			s_exit(argv, buf);
+
 			return (1);
+
 		}
-		for (i = 0; arr[i].func; i++)
+		for (x = 0; st[x].func; x++)
 		{
-			if (_strcmp(argv[0], arr[i].argv) == 0)
+			if (_strcmp(argv[0], st[x].argv) == 0)
 			{
-				arr[i].func();
+
+				st[x].func();
+
 				return (1);
 			}
+
 		}
+
+
 	}
+
+
 	return (0);
+
 }
 
