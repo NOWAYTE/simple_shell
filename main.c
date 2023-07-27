@@ -1,7 +1,7 @@
 #include "shell.h"
 /**
  * main - Entry to the program
- * @argc: argument count 
+ * @argc: argument count
  * @argv: argument vector
  *
  * Return: Always 0 (succees)
@@ -17,7 +17,7 @@ int main(int argc, char **argv)
  * @argc: argument count
  * @argv: argument vector
  *
- * Return: NUll 
+ * Return: NUll
  */
 int s_loop(int argc, char **argv)
 {
