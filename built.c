@@ -1,71 +1,99 @@
 #include "shell.h"
 
 /**
- * _get_env - gets the current env
- * @env: the env
- * Return: _env_parser function on success, NULL on failure
+ * _get_env - gets env
+ *
+ * @env: env
+ * Return: NULL on failure
 **/
 char **_get_env(char *env)
 {
-	int inner;
-	int outer;
-	char *name = NULL;
 
-	for (outer = 0; environ[outer] != NULL; outer++)
+	int in;
+	int out;
+
+	char *n = NULL;
+
+	for (out = 0; environ[out] != NULL; out++)
 	{
-		for (inner = 0; environ[outer][inner] != '='; inner++)
+
+
+		for (in = 0; environ[out][in] != '='; in++)
+
+
 		{
-			if (environ[outer][inner] != env[inner])
+
+
+			if (environ[out][in] != env[in])
 				break;
-			if (environ[outer][inner] == env[inner])
+			if (environ[out][in] == env[in])
 			{
-				if (env[inner + 1] == '\0' && environ[outer][inner + 1] == '=')
+
+
+				if (env[in + 1] == '\0' && environ[out][in + 1] == '=')
 				{
-					name = _strdup(&(environ[outer][inner + 2]));
-					return (_env_parser(name));
+					n = _strdup(&(environ[out][in + 2]));
+					return (_env_parser(n));
 				}
 			}
 		}
 	}
+
+
 	return (NULL);
 }
 
 /**
- * _env_parser- tokens the PATH
- * @name: the full PATH seperated by :'s
- * Return: an array of strings
+ * _env_parser- gets path and tokenizes
+ * @name: PATH
+ * Return: an array
 **/
 char **_env_parser(char *name)
 {
-	int token_inc;
-	int tokencount;
-	char *token = NULL;
-	int i;
-	char **p = NULL;
-	char *namestore = name;
+	int t_inc;
+	int t_count;
 
-	tokencount = 0;
+	char *token = NULL;
+
+	int i;
+	char **y = NULL;
+	char *n_st = name;
+
+	t_count = 0;
+
+
 	for (i = 0; name[i] != '\0'; i++)
 	{
 		if (name[i] == ':')
 		{
-			tokencount++;
+			t_count++;
 		}
 	}
-	p = malloc(sizeof(char *) * (tokencount + 2));
-	if (p != NULL)
+	y = malloc(sizeof(char *) * (t_count + 2));
+
+	if (y != NULL)
 	{
-		token_inc = 0;
+
+		t_inc = 0;
 		token = strtok(name, ":");
-		while (token_inc < (tokencount + 1))
+
+
+		while (t_inc < (t_count + 1))
 		{
-			p[token_inc] = _strdup(token);
+			y[t_inc] = _strdup(token);
+
 			token = strtok(NULL, ":");
-			token_inc++;
+			t_inc++;
+
+
 		}
-	p[token_inc] = NULL;
+	y[t_inc] = NULL;
+
+
 	}
-	free(namestore);
-	return (p);
+
+
+	free(n_st);
+	return (y);
 }
 
