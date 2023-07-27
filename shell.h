@@ -26,31 +26,31 @@ typedef struct builtins
 	int (*func)();
 } builtins;
 
-char **tokenize(char *userinput);
+char **token(char *userinput);
 
-int stringlength(char *s);
+int s_len(char *s);
 
-int shell_loop(int argc, char **argv);
+int s_loop(int argc, char **argv);
 
-int executor(char *asdf, char **argv);
+int exec(char *asdf, char **argv);
 
-int function_finder(char **argv, char *buffer);
+int fin_fun(char **argv, char *buffer);
 
-int sh_exit(char **argv, char *buffer);
+int s_exit(char **argv, char *buffer);
 
-int sh_cd(char **argv);
+int s_cd(char **argv);
 
-int sh_env(void);
+int s_env(void);
 
 char *_strcat(char *dest, char *src);
 
-char *dir_search(char **argv, char **path_tokens);
+char *s_dir(char **argv, char **path_tokens);
 
 int _strcmp(char *s1, char *s2);
 
 char *executable_maker(char *asdf, char **argv);
 
-void dubbie_free(char **dubbie_pointie);
+void d_free(char **dubbie_pointie);
 
 int _putchar(char c);
 
@@ -64,10 +64,11 @@ char **_get_env(char *env);
 
 extern char **environ;
 
-int sh_setenv(char **argv);
+int s_setenv(char **argv);
 
-int sh_unsetenv(char **argv);
+int s_unsetenv(char **argv);
 
 int sh_alias(char **argv);
 
 #endif /* HEADER_H */
+

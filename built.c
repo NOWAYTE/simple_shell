@@ -1,4 +1,4 @@
-#include "header.h"
+#include "shell.h"
 
 /**
  * _get_env - gets the current env
@@ -31,7 +31,7 @@ char **_get_env(char *env)
 }
 
 /**
- * _env_parser- tokenizes the PATH
+ * _env_parser- tokens the PATH
  * @name: the full PATH seperated by :'s
  * Return: an array of strings
 **/
@@ -39,7 +39,7 @@ char **_env_parser(char *name)
 {
 	int token_inc;
 	int tokencount;
-	char *tokenize = NULL;
+	char *token = NULL;
 	int i;
 	char **p = NULL;
 	char *namestore = name;
@@ -56,11 +56,11 @@ char **_env_parser(char *name)
 	if (p != NULL)
 	{
 		token_inc = 0;
-		tokenize = strtok(name, ":");
+		token = strtok(name, ":");
 		while (token_inc < (tokencount + 1))
 		{
-			p[token_inc] = _strdup(tokenize);
-			tokenize = strtok(NULL, ":");
+			p[token_inc] = _strdup(token);
+			token = strtok(NULL, ":");
 			token_inc++;
 		}
 	p[token_inc] = NULL;
@@ -68,3 +68,4 @@ char **_env_parser(char *name)
 	free(namestore);
 	return (p);
 }
+

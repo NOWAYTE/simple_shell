@@ -1,11 +1,11 @@
-#include "header.h"
+#include "shell.h"
 /**
- * dir_search - searches through the PATH for a matching command
- * @argv: array of strings containing our tokenized arguments
- * @path_tokens: array of strings containing our tokenized PATH
+ * s_dir - searches through the PATH for a matching command
+ * @argv: array of strings containing our tokend arguments
+ * @path_tokens: array of strings containing our tokend PATH
  * Return: modified argv[0]
 **/
-char *dir_search(char **argv, char **path_tokens)
+char *s_dir(char **argv, char **path_tokens)
 {
 	struct dirent *dir_store;
 	DIR *deer = NULL;
@@ -78,3 +78,96 @@ char *_strcat(char *dest, char *src)
 	newcmd[x + p] = '\0';
 	return (newcmd);
 }
+
+
+
+
+
+
+
+
+/**
+ * sh_alias - checks for an alias
+ * @argv: arguments
+ * Return: 0
+**/
+int sh_alias(char **argv)
+{
+	argv = argv;
+	return (0);
+}
+
+#include "shell.h"
+
+/**
+ * s_exit - this exits the shell
+ * description: exit builtin
+ * @argv: argv
+ * @buffer: buffer
+ * Return: 0
+ */
+
+int s_exit(char **argv, char *buffer)
+{
+	free(argv);
+	free(buffer);
+	exit(0);
+}
+
+/**
+ * s_env- prints the environment details
+ * description: env builtin
+ * Return: 0
+ */
+int s_env(void)
+{
+	int i;
+	int j;
+
+	char *string = NULL;
+
+	for (i = 0; environ[i] != NULL; i++)
+	{
+		for (j = 0; environ[i][j] != '\0'; j++)
+		{
+			string = (&(environ[i][j]));
+			write(STDOUT_FILENO, string, s_len(string));
+			break;
+		}
+		_putchar('\n');
+	}
+	return (0);
+}
+/**
+* s_setenv - sets the env
+* @argv: arguments
+* Return: 0
+*/
+int s_setenv(char **argv)
+{
+	argv = argv;
+	return (0);
+}
+
+/**
+* s_unsetenv - unsets the env
+* @argv: arguments
+* Return: 0
+*/
+int s_unsetenv(char **argv)
+{
+	argv = argv;
+	return (0);
+}
+
+/**
+ * s_cd - changes current directory
+ * @argv: arguments
+ * Return: 0
+**/
+int s_cd(char **argv)
+{
+	argv = argv;
+	return (0);
+}
+

@@ -1,26 +1,26 @@
-#include "header.h"
+#include "shell.h"
 
 /**
- * main - main function for our simple shell
- * description: main
- * @argc: argc
- * @argv: argv
- * Return: 0
+ * main – Entry to the program
+ * description: main function
+ * @argc: argument count 
+ * @argv: argument vector
+ * Return: Always 0 (success)
  */
 int main(int argc, char **argv)
 {
-	shell_loop(argc, argv);
+	s_loop(argc, argv);
 	return (0);
 }
 
 /**
- * shell_loop - shell loop to constantly run the shell
- * description: until the exit command is entered
- * @argc: argc
- * @argv: argv
+ * s_loop – runs the shell repeatedly
+ * description: exit terminates this loop
+ * @argc: argument count
+ * @argv: argument vector
  * Return: 0
  */
-int shell_loop(int argc, char **argv)
+int s_loop(int argc, char **argv)
 {
 	int userinput;
 	char *buffer = NULL;
@@ -39,23 +39,23 @@ int shell_loop(int argc, char **argv)
 		   /* perror("Malloc failure\n"); */
 		if (isatty(STDIN_FILENO))
 		{
-			write(STDOUT_FILENO, prompt, stringlength(prompt));
+			write(STDOUT_FILENO, prompt, s_len(prompt));
 		}
 		userinput = getline(&buffer, &bufsize, stdin);
 		if (userinput == -1)
 			break;
-		argv = tokenize(buffer);
+		argv = token(buffer);
 		if (argv[0] == NULL)
 			continue;
-		if (function_finder(argv, buffer) == 1)
+		if (fin_fun(argv, buffer) == 1)
 		{
 			free(argv);
 			continue;
 		}
 		path_tokens = _get_env("PATH");
-		executable = dir_search(argv, path_tokens);
-		executor(executable, argv);
-		dubbie_free(path_tokens);
+		executable = s_dir(argv, path_tokens);
+		exec(executable, argv);
+		d_free(path_tokens);
 		if (argv[0][0] != '/')
 			free(executable);
 		free(argv);
@@ -65,21 +65,21 @@ return (0);
 }
 
 /**
- * tokenize - tokenize user input
+ * token - token user input
  * description: to breakdown command
- * @userinput: userinput
+ * @userinput:command
  * Return: 0
  */
-char **tokenize(char *userinput)
+char **token(char *userinput)
 {
 	int token_inc = 0;
-	char *tokenize = NULL;
+	char *token = NULL;
 	char **argv = NULL;
 	int tokencount = 0;
 	int i;
 
 	strtok(userinput, "\n");
-	for (i = 0; userinput[i] != '\0'; i++)
+	for (i = 0;userinput[i] != '\0'; i++)
 	{
 		if (userinput[i] == ' ')
 		{
@@ -90,11 +90,11 @@ char **tokenize(char *userinput)
 	if (argv != NULL)
 	{
 		token_inc = 0;
-		tokenize = strtok(userinput, " ");
+		token = strtok(userinput, " ");
 		while (token_inc < (tokencount + 1))
 		{
-			argv[token_inc] = tokenize;
-			tokenize = strtok(NULL, " ");
+			argv[token_inc] = token;
+			token = strtok(NULL, " ");
 			token_inc++;
 		}
 		argv[token_inc] = NULL;
@@ -105,14 +105,14 @@ char **tokenize(char *userinput)
 }
 
 /**
- * executor - executes the command given
+ * exec - executes the command given
  * description: by forking and execing
  * @asdf: asdf
  * @argv: argv
  * Return: 0
  */
 
-int executor(char *asdf, char **argv)
+int exec(char *asdf, char **argv)
 {
 	pid_t child_pid;
 
@@ -133,22 +133,22 @@ int executor(char *asdf, char **argv)
 
 
 /**
- * function_finder - for builtins
+ * fin_fun - for builtins
  * description: searches and compares to see if the command is a builtin
  * @argv: argv
  * @buffer: buffer
  * Return: 0
  */
-int function_finder(char **argv, char *buffer)
+int fin_fun(char **argv, char *buffer)
 {
 	int i;
 
 	builtins arr[] = {
-		{"cd", sh_cd},
-		{"env", sh_env},
-		{"exit", sh_exit},
-		{"setenv", sh_setenv},
-		{"unsetenv", sh_unsetenv},
+		{"cd", s_cd},
+		{"env", s_env},
+		{"exit", s_exit},
+		{"setenv", s_setenv},
+		{"unsetenv", s_unsetenv},
 		{"alias", sh_alias},
 		{'\0', NULL}
 	};
@@ -157,7 +157,7 @@ int function_finder(char **argv, char *buffer)
 	{
 		if (_strcmp(argv[0], "exit") == 0)
 		{
-			sh_exit(argv, buffer);
+			s_exit(argv, buffer);
 			return (1);
 		}
 		for (i = 0; arr[i].func; i++)
@@ -171,3 +171,4 @@ int function_finder(char **argv, char *buffer)
 	}
 	return (0);
 }
+

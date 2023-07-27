@@ -1,4 +1,4 @@
-#include "header.h"
+#include "shell.h"
 
 /**
  * _strcmp - compares two strings to see if they are the same
@@ -21,11 +21,11 @@ return (0);
 }
 
 /**
- * stringlength - gets the length of a string
+ * s_len - gets the length of a string
  * @s: a string
  * Return: length of string
 **/
-int stringlength(char *s)
+int s_len(char *s)
 {
 	int i;
 
@@ -68,11 +68,11 @@ int _putchar(char c)
 }
 
 /**
- * dubbie_free - frees double pointers
+ * d_free - frees double pointers
  * @dubbie_pointie: a double pointer
  * Return: void
 **/
-void dubbie_free(char **dubbie_pointie)
+void d_free(char **dubbie_pointie)
 {
 	int i = 0;
 
@@ -83,3 +83,4 @@ void dubbie_free(char **dubbie_pointie)
 	}
 	free(dubbie_pointie);
 }
+
